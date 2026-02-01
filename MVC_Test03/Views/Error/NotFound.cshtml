@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Đường dẫn tới layout của bạn
+}
+@*<img  src="~/Content/images/404error-pic.jpg" class="container-fluid "  />*@
+<style>
+    body {
+        height: 300vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #e0f7fa, #b2ebf2, #80deea);
+        color: #333;
+    }
+    .back-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #333;
+        border: 2px solid #80deea; /* Border ban đầu */
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+        .back-button:hover {
+            background-color: #80deea; /* Màu nền giống border */
+            color: #fff;
+            border-color: #b2ebf2; /* Màu border nhạt hơn khi hover */
+        }
+</style>
+
+<div class="text-center " style="display:flex ;min-height:80vh; flex-direction:column ;">
+    <h1 class="mt-4">404 - File Not Found</h1>
+    <h3 class="mt-2 text-black-50">Xin lỗi, trang bạn đang tìm kiếm không tồn tại.</h3>
+    <p ><a class="btn back-button mt-3" href="@Url.Action("Index", "Home")"><b>Quay về trang chủ</b></a></p>
+</div>

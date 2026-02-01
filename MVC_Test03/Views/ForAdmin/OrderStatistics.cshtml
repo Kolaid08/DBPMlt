@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MVC_Test03.Models.OrderStatisticsViewModel>
+@{
+    ViewBag.Title = "OrderStatistics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thống kê đơn hàng theo tháng</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tháng</th>
+            <th>Số lượng đơn hàng</th>
+            <th>Số lượng sản phẩm đã bán</th>
+            <th>Tổng doanh thu</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Month</td>
+                <td>@item.OrderCount</td>
+                <td>@item.TotalProductsSold</td>
+                <td>@item.TotalRevenue.ToString("#,##0") VND</td>   
+            </tr>
+        }
+    </tbody>
+</table>

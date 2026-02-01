@@ -1,0 +1,125 @@
+﻿.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    gap: 8px; /* Khoảng cách giữa các nút */
+}
+
+
+
+.page-item a, .page-item span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Kích thước nút tròn */
+    height: 40px;
+    color: #607D8B; /* Màu chữ */
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 50%; /* Làm cho nút tròn */
+    background-color: #f3f3f7;
+    transition: all 0.3s;
+    border: none; /* Bỏ border */
+}
+
+.page-item.active a {
+    background-color: #ff6b6b; /* Màu nền khi active */
+    color: white;
+    font-weight: bold;
+}
+
+.page-item a:hover {
+    background-color: #d7d7e3; /* Màu nền khi hover */
+    color: #333;
+}
+
+/* Thêm style cho ký tự điều hướng (<<, <, >, >>) */
+.page-item:first-child a, .page-item:last-child a,
+.page-item:first-child span, .page-item:last-child span {
+    border-radius: 50%; /* Làm tròn cho nút điều hướng */
+    color: #607D8B;
+}
+ /*Thông báo Toastr*/
+.toast-top-right {
+    top: 9% !important;
+    right: 7% !important
+}
+
+.toast-success {
+    background-color: #00CC00;
+    color: white;
+}
+
+
+
+
+.card-pro {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .card-pro:hover {
+        transform: scale(1.02);
+    }
+
+    .card-pro img {
+        border-radius: 5px;
+    }
+
+.btn {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.btn-info, .btn-danger {
+    transition: background-color 0.3s;
+}
+
+    .btn-info:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+        color: white;
+    }
+
+body {
+    /*background-image:url('/Content/images/pexels-pixabay-271795.jpg');*/
+    background-color: #FFFAF0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.container h4 {
+    font-weight: bold;
+    color: #333;
+}
+
+ .custom-form {
+    background-color: #EEE9E9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.container .btn-primary {
+    background-color: #007bff;
+}
+
+.container .btn-danger {
+    background-image: linear-gradient(to right, #ff416c, #ff4b2b);
+}
+
+
+

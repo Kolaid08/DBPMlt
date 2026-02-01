@@ -1,0 +1,93 @@
+﻿@model MVC_Test03.Models.Customer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Thông Tin Khách Hàng</h1>
+
+    <!-- Thông tin cá nhân (Có thể chỉnh sửa) -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thông Tin Cá Nhân</h5>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Họ và Tên:</label>
+                    <input autocomplete="false" type="text" class="form-control" id="name" value="@Model.NameCus" disabled size="30">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input autocomplete="false" type="text" class="form-control" id="name" value="@Model.EmailCus" disabled size="30">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Số Điện Thoại:    </label>
+                    <input autocomplete="false" type="text" class="form-control" id="name" value="@Model.PhoneCus" disabled size="30">
+                </div>
+                <a href="@Url.Action("Edit", "Customers", new { id = Model.IDCus })" class="btn btn-success">Chỉnh sửa thông tin</a>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay về</a>
+                <br />
+                <a href="@Url.Action("MyOrders", "OrderProes", new { id = Model.IDCus })" class="btn btn-primary my-2">Xem lịch sử đơn hàng của bạn</a>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Lịch sử đơn hàng -->
+    @*<div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4>Lịch sử đơn hàng</h4>
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-warning">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ngày Đặt Hàng</th>
+                        <th>Địa Chỉ Giao Hàng</th>
+                        <th>Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Giá</th>
+                        <th>Tổng Tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.OrderHistory)
+                    {
+                        <tr>
+                            <td>@order.DateOrder</td>
+                            <td>@order.AddressDeliverry</td>
+                            <td>
+                                @foreach (var detail in order.OrderDetails)
+                                {
+                                    <div>@detail.IDProduct</div>
+                                }
+                            </td>
+                            <td>
+                                @foreach(var details in order.OrderDetails)
+                                {
+                                    <div>@details.Quantity</div>
+                                }
+                            </td>
+                            <td>
+                                @foreach (var detail in order.OrderDetails)
+                                {
+                                    <div>@detail.UnitPrice.ToString("C")</div>
+                                }
+                            </td>
+                        
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+        </div>
+    

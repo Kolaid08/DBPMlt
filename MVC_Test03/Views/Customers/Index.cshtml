@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MVC_Test03.Models.Customer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Khách hàng</h2>
+
+<p>
+    @Html.ActionLink("Thêm khách hàng mới", "Create",null,new {@class="btn btn-primary "})
+</p>
+<table class="table">
+    <tr>
+        <th>Mã khách hàng</th>
+        <th>Tên Khách Hàng</th>
+        <th>Số điện thoại</th>
+        <th> Email</th>
+        <th>Thao tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem=>item.IDCus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameCus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneCus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailCus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDCus }, new {@class="btn btn-success"}) 
+                @Html.ActionLink("Details", "Details", new { id = item.IDCus }, new {@class = "btn btn-primary"}) 
+                @Html.ActionLink("Delete", "Delete", new { id = item.IDCus },new {@class="btn btn-danger"})
+            </td>
+        </tr>
+    }
+
+</table>

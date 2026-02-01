@@ -1,0 +1,153 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MVC_Test03.Models.Product>
+
+@{
+    ViewBag.Title = "ProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/css/ProductList.css?v3.0" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script type="text/javascript">
+    toastr.options.positionClass = 'toast-top-right'
+    toastr.options.timeOut = 2000;
+    @if (TempData["message"] != null)
+    {
+        <text>
+
+            toastr.success('@TempData["message"]');
+        </text>
+    }
+</script>
+
+<div class="container">
+    <div class="custom-form">
+        <h4 class="text-center mb-3">CỬA HÀNG NỘI THẤT FUTURE UY TÍN, CHẤT LƯỢNG HÀNG ĐẦU HUFLIT</h4>
+        <div class="container p-4" style="background-color: #FFFAF0; border-radius: 10px; ">
+
+            <!-- Bộ lọc sản phẩm -->
+            @using (Html.BeginForm("ProductList", "Products", FormMethod.Get))
+            {
+                <div class="row g-3 flex-grow-1 justify-content-center ">
+                    <!-- Lọc theo tên sản phẩm -->
+                    <div class="col-12 col-md-3 col-lg-3 ">
+                        <input type="text" id="searchName" name="SearchString" class="form-control" placeholder="Nhập tên sản phẩm..." />
+                    </div>
+
+                    <!-- Lọc theo loại sản phẩm -->
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <select id="category" name="idCate" class="form-select">
+                            <option value="">---Chọn loại sản phẩm---</option>
+                            @foreach (var cate in ViewBag.Categories as List<MVC_Test03.Models.Category>)
+                            {
+                                <option value="@cate.IDCate.Trim()">@cate.NameCate.Trim()</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Sắp xếp theo giá -->
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <select id="sortPrice" name="sortPrice" class="form-select">
+                            <option value="">Chọn sắp xếp</option>
+                            <option value="asc">Giá tăng dần</option>
+                            <option value="desc">Giá giảm dần</option>
+                        </select>
+                    </div>
+
+                    <!-- Nút Tìm Kiếm và Xóa Lọc -->
+                    <div class="col-12 d-flex justify-content-center align-items-center mt-3">
+                        <button type="submit" class="btn btn-primary mx-2">Tìm Kiếm</button>
+                        <button type="reset" class="btn btn-danger">Xóa Lọc</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+        
+    <div class="row my-3">
+        @foreach (var pro in Model)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div style="background-color: #EEE9E9 " class="card card-pro">
+                    <img src="~/Content/images/@pro.ImagePro" width="200" height="250" alt="Product Image" class="card-img-top" />
+                    <p class="fw-bold">@Html.DisplayFor(model => pro.NamePro)</p>
+                    <p>
+                        <span class="text-uppercase text-center w-100 fw-bold " style=" color: #4e3f30;">@pro.Price.Value.ToString("#,##0") VND</span>
+                    </p>
+                    <div class="d-flex align-items-center justify-content-center ">
+                        <a class="btn btn-info " href="/Products/Details/@pro.ProductID">Chi tiết</a>
+                        <a href="javascript:void(0);" class="btn btn-success add-to-cart" data-product-id="@pro.ProductID">Mua</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Số trang *@
+    <div class="text-center">
+        @Html.PagedListPager(Model, page => Url.Action("ProductList", new { page }), new PagedListRenderOptions
+   {
+       UlElementClasses = new[] { "pagination" },
+       LiElementClasses = new[] { "page-item" },
+       DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+       DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+       DisplayLinkToLastPage = PagedListDisplayMode.Always,
+       LinkToIndividualPageFormat = " {0}",
+       LinkToPreviousPageFormat = "&lsaquo;", 
+       LinkToNextPageFormat = "&rsaquo;",      
+       LinkToFirstPageFormat = "&laquo;",      
+       LinkToLastPageFormat = "&raquo;"        
+   })
+    </div>
+
+    <script>
+        const userRole = localStorage.getItem("UserRole"); // hoặc document.cookie
+        console.log("User Role from Storage: ", userRole);
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    // Gọi action để lấy vai trò người dùng
+    $.ajax({
+        url: '@Url.Action("GetUserRole", "Account")',
+        type: 'GET',
+        success: function (data) {
+            console.log("User Role from Session: ", data.role);
+        },
+        error: function () {
+            console.log("Error fetching user role");
+        }
+    });
+});
+    </script>
+
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        $(".add-to-cart").click(function () {
+            var productId = $(this).data("product-id");
+
+            $.ajax({
+                url: '@Url.Action("AddToCart", "ShoppingCart")',
+                type: 'POST',
+                data: { id: productId },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message); // Hiển thị thông báo thành công
+                    } else {
+                        toastr.error(response.message); // Hiển thị thông báo lỗi nếu không thành công
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+            });
+        });
+    });
+
+</script>

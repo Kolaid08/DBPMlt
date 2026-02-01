@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MVC_Test03.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>LOẠI SẢN PHẨM</h2>
+
+<p>
+    @Html.ActionLink("Thêm loại sản phẩm mới", "Create",null, new {@class="text-decoration-none btn btn-primary , text-white"})
+</p>
+<table class="table table-bordered" style="border:5px solid gray ; ">
+    <tr>
+        <th class="text-center"> Mã Sản Phẩm </th>
+        <th class="text-center"> Loại Sản Phẩm </th>
+        <th class="text-center">Thao Tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+           
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.IDCate)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.NameCate)
+            </td>
+            <td class="text-center">
+                @Html.ActionLink("Edit", "Edit", "Categories", new { id = item.IDCate.Trim() }, new {@class="btn btn-success"})     
+                @Html.ActionLink("Details", "Details", "Categories", new { id = item.IDCate.Trim() }, new {@class="btn btn-primary"}) 
+                @Html.ActionLink("Delete", "Delete", "Categories", new { id = item.IDCate.Trim() }, new {@class="btn btn-danger"})
+            </td>
+        </tr>
+    }
+
+</table>
+

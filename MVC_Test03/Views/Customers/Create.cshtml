@@ -1,0 +1,60 @@
+﻿@model MVC_Test03.Models.Customer
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tạo mới</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Khách hàng</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <p style="margin-bottom:0">Tên</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NameCus, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NameCus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p style="margin-bottom:0">Số Điện Thoại</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PhoneCus, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PhoneCus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p style="margin-bottom:0">Email</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.EmailCus, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EmailCus, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        <p style="margin-bottom:0">Địa Chỉ</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AddressCus, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AddressCus, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-primary mt-2" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index",null,new {@class="btn btn-secondary mt-2"})
+</div>

@@ -1,0 +1,46 @@
+﻿@model List<MVC_Test03.Models.OrderPro>
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container border-dark " style="height:80vh">
+    <h2>Danh sách đơn hàng của bạn</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-warning">
+            @ViewBag.ErrorMessage
+        </div>
+        <div>
+
+            @Html.ActionLink("Đặt Hàng Ngay", "ProductList", "Products", null, new { @class = "btn btn-success" })
+
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ngày đặt</th>
+                    <th>Địa chỉ giao hàng</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.DateOrder</td>
+                        <td>@order.AddressDeliverry</td>
+                        <td>
+                            <!-- Liên kết để xem chi tiết đơn hàng -->
+                            <a href="@Url.Action("Details", "OrderProes", new { id = order.ID })" class="btn btn-info">Xem chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="@Url.Action("Details", "Customers")" class="btn btn-secondary">Quay Về </a>
+    }
+</div>

@@ -1,0 +1,123 @@
+﻿@model MVC_Test03.Models.Cart
+@{
+    ViewBag.Title = "ShowCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="min-height:80vh" class="container mt-4 custom-cart">
+    <h2 class="text-center fw-bold" style="font-size: 2rem;">Giỏ hàng của bạn</h2>
+    <hr />
+
+    <a href="@Url.Action("ProductList", "Products")" class="btn btn-outline-secondary mb-3" style="font-size:18px"> &#x2190 Tiếp tục Mua hàng</a>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model == null)
+    {
+        <h4>Giỏ hàng rỗng! Xin mời tiếp tục mua hàng</h4>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Phần hiển thị sản phẩm trong giỏ hàng -->
+            <div class="col-lg-8">
+                <p><strong>Có @Model.Items.Count() sản phẩm trong giỏ hàng</strong></p>
+                <!-- Tiêu đề các cột -->
+                <div class="row fw-bold border-bottom py-2 text-center align-items-center">
+                    <div class="col-6 text-start">Tên sản phẩm</div>
+                    <div class="col-2">Số lượng</div>
+                    <div class="col-3 text-end">Thành tiền</div>
+                    <div class="col-1 text-end"></div>
+                </div>
+
+                <!-- Danh sách sản phẩm trong giỏ hàng -->
+                @foreach (var item in Model.Items)
+                {
+                    decimal total = item._quantity * (decimal)item._product.Price.Value;
+                    <div class="row border-bottom py-3 align-items-center">
+                        <!-- Tên sản phẩm và hình ảnh -->
+                        <div class="col-6 d-flex align-items-center">
+                            <a href="/Products/Details/@item._product.ProductID" class="me-3">
+                                <img src="~/Content/images/@item._product.ImagePro" width="80" class="img-thumbnail" />
+                            </a>
+                            <div>
+                                <h6 class="mb-0 ">@item._product.NamePro</h6>
+                                <p class="text-muted mb-0">
+                                    <strong>@item._product.Price.Value.ToString("#,##0").Replace(',', '.') đ</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Số lượng và nút cập nhật -->
+                        <div class="col-2 text-center">
+                            @using (Html.BeginForm("Update_Cart_Quantity", "ShoppingCart", FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                <input type="hidden" value="@item._product.ProductID" name="idPro" />
+                                <div class="input-group input-group-sm">
+                                    <input type="number" value="@item._quantity" name="carQuantity" class="form-control text-center" min="1" style="width: 50px;" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">Cập nhật</button>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Thành tiền -->
+                        <div class="col-3 text-end">
+                            <strong>@total.ToString("#,##0").Replace(',', '.') đ</strong>
+                        </div>
+
+                        <!-- Nút xóa -->
+                        <div class="col-1 text-end">
+                            <a href="@Url.Action("RemoveCart", "ShoppingCart", new { id = item._product.ProductID })" class="btn btn-danger btn-sm">Xoá</a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Phần thanh toán bên phải -->
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Thông tin đơn hàng</h5>
+                        <hr />
+
+                        <p class="fs-4 fw-bold text-danger text-center">
+                            Tổng tiền: @Model.Total_money().ToString("#,##0").Replace(',', '.') đ
+                        </p>
+
+                        @using (Html.BeginForm("CheckOut", "ShoppingCart", FormMethod.Post))
+                        {
+                            <div class="mb-3">
+                                <label for="CodeCustomer" class="form-label">Mã Khách hàng:</label>
+                                <input type="text" id="CodeCustomer" name="CodeCustomer" class="form-control" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="AddressDelivery" class="form-label">Địa chỉ giao hàng:</label>
+                                <input type="text" id="AddressDelivery" name="AddressDeliverry" class="form-control" required />
+                            </div>
+                            if (Session["UserRole"] != null && (Session["UserRole"].ToString() == "Customer" || Session["UserRole"].ToString() == "Admin"))
+                            {
+                                <button type="submit" class="btn btn-danger w-100 mb-3">Thanh toán</button>
+                            }
+                            else
+                            {
+                                <a href="/Account/Login" class="btn btn-danger w-100 mb-3">Thanh toán</a>
+
+                            }
+                        }
+
+                        <div class="text-muted small">
+                            <p>✔ Không rủi ro. Đặt hàng trước, thanh toán sau tại nhà.</p>
+                            <p>✔ Đơn hàng sẽ được giao trong vòng 3 ngày.</p>
+                            <p>✔ Miễn phí đổi 1 lần - Bảo hành 2 năm - Bảo trì trọn đời.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

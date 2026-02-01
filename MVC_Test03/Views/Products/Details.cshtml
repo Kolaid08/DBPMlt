@@ -1,0 +1,189 @@
+﻿@model MVC_Test03.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script type="text/javascript">
+    toastr.options.positionClass = 'toast-top-right'
+    toastr.options.timeOut = 2000;
+    @if (TempData["message"] != null)
+    {
+        <text>
+
+            toastr.success('@TempData["message"]');
+        </text>
+    }
+</script>
+
+<div class="container my-5">
+    <div class="row mt-5">
+        <!-- Cột ảnh sản phẩm -->
+        <div class="col-md-5">
+            <div class="product-image-container shadow-lg rounded overflow-hidden">
+                <img src="~/Content/images/@Model.ImagePro" class="img-fluid" alt="@Model.NamePro" style="transition: transform 0.3s ease; width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <!-- Cột chi tiết sản phẩm -->
+        <div class="col-md-7">
+            <div class="product-details bg-white p-4 rounded shadow-sm d-flex flex-column">
+                <!-- Tên sản phẩm -->
+                <div class="d-flex align-items-center mb-3">
+                    <span class="label fw-bold text-muted" style="width: 150px; font-size: 1.25rem;">Tên sản phẩm:</span>
+                    <h2 class="product-name fw-bold mb-0 text-dark" style="font-size: 2.5rem;">@Model.NamePro</h2>
+                </div>
+
+                <!-- Giá sản phẩm -->
+                <div class="d-flex align-items-center mb-3">
+                    <span class="label fw-bold text-muted" style="width: 150px; font-size: 1.25rem;">Giá:</span>
+                    <div>
+                        <span class="discounted-price text-danger fw-bold" style="font-size: 2.5rem;">
+                            @String.Format("{0:N0}", Model.Price)
+                        </span>
+                        <span class="currency-label text-secondary fw-bold" style="font-size: 1.5rem;">đồng</span>
+                    </div>
+                </div>
+
+                <!-- Danh mục sản phẩm -->
+                <div class="d-flex align-items-center mb-3">
+                    <span class="label fw-bold text-muted" style="width: 150px; font-size: 1.25rem;">Danh mục:</span>
+                    <span class="badge bg-secondary" style="font-size: 1.25rem;">@Model.Category1.NameCate</span>
+                </div>
+
+                <!-- Mô tả sản phẩm -->
+                <div class="d-flex mb-3">
+                    <span class="label fw-bold text-muted" style="width: 150px; font-size: 1.25rem;">Mô tả:</span>
+                    <p class="text-muted mb-0" style="font-size: 1.2rem;">@Model.DecriptionPro</p>
+                </div>
+
+                <!-- Nút mua hàng và thêm vào giỏ hàng -->
+                <div class="actions mt-4">
+                    <a href="javascript:void(0);" class="btn btn-custom btn-lg me-2 rounded add-to-cart" data-product-id="@Model.ProductID"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng</a>
+                    <a href="javascript:void(0);" class="btn btn-custom btn-lg rounded add-to-cart" data-product-id="@Model.ProductID"><i class="bi bi-lightning-fill"></i> Mua ngay</a>
+                </div>
+
+                <!-- Nút Trở về nằm cạnh nút Thêm vào giỏ hàng -->
+                <div class="d-flex justify-content-start mt-3">
+                    <a href="@Url.Action("ProductList")" class="btn btn-secondary btn-lg rounded">
+                        <i class="bi bi-arrow-left"></i> Trở về
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-image-container {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .product-image-container:hover {
+            transform: scale(1.03);
+        }
+
+        .product-image-container img {
+            transition: transform 0.3s ease;
+        }
+
+            .product-image-container img:hover {
+                transform: scale(1.05);
+            }
+
+    .badge-secondary {
+        background-color: #f5f5f5;
+        color: #555;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .product-name {
+        font-size: 2.5rem; /* Tăng kích thước chữ của tên sản phẩm */
+    }
+
+    .discounted-price {
+        font-size: 2.5rem; /* Tăng kích thước chữ của giá sản phẩm */
+        color: #ff5722;
+    }
+
+    .currency-label {
+        font-size: 1.5rem; /* Tăng kích thước chữ của đơn vị tiền tệ */
+        color: #555;
+    }
+
+    .label {
+        font-size: 1.25rem; /* Tăng kích thước chữ của các nhãn */
+        color: #666;
+    }
+
+    .text-muted {
+        font-size: 1.2rem; /* Tăng kích thước chữ của mô tả sản phẩm */
+    }
+
+    /* Thiết kế các nút bấm */
+    .btn-custom {
+        background-color: #007bff; /* Màu xanh dương nhạt */
+        color: white; /* Màu chữ trắng */
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        padding: 1rem 1.5rem; /* Kích thước nút lớn hơn */
+        font-size: 1.2rem; /* Kích thước chữ lớn hơn */
+    }
+
+        .btn-custom:hover {
+            background-color: #0056b3; /* Màu xanh dương đậm khi hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Màu xám đậm */
+        color: white; /* Màu chữ trắng */
+        padding: 1rem 1.5rem; /* Kích thước nút lớn hơn */
+        font-size: 1.2rem; /* Kích thước chữ lớn hơn */
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Màu xám đậm hơn khi hover */
+        }
+    .toast-top-right {
+        top: 9% !important;
+        right: 7% !important
+    }
+
+    .toast-success {
+        background-color: #00CC00;
+        color: white;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $(".add-to-cart").click(function () {
+            var productId = $(this).data("product-id");
+
+            $.ajax({
+                url: '@Url.Action("AddToCart", "ShoppingCart")',
+                type: 'POST',
+                data: { id: productId },
+                success: function (response) {
+                if (response.success) {
+                toastr.success(response.message); // Hiển thị thông báo thành công
+                } else {
+                toastr.error(response.message); // Hiển thị thông báo lỗi nếu không thành công
+                }
+                },
+                error: function () {
+                toastr.error("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+                });
+                });
+                });
+
+</script>

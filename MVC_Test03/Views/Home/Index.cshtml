@@ -1,0 +1,314 @@
+﻿@model MVC_Test03.Models.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Nội Thất</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/images/bed.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link type="text/css" href="~/Content/css/TrangChu.css?v=1.0" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Video Section -->
+    <div class="video-container">
+        <video autoplay loop muted preload="auto">
+            <source src="@Url.Content("~/Content/audio/videohomepage.mp4")" type="video/mp4 ">
+            Your browser does not support the video element.
+        </video>
+        <div class="overlay"></div> <!-- Overlay để tối video -->
+        <!-- Content on top of the video -->
+        <div class="video-content">
+            @*<h2 class="video-title">Chào Mừng Đến Với Cửa Hàng Nội Thất</h2>*@
+            <h2>Khám phá thế giới Nội Thất </h2>
+            <h4>Chuẩn Quốc Tế</h4>
+            <p class="video-description">@*Khám phá bộ sưu tập nội thất mới nhất cho ngôi nhà của bạn*@ </p>
+                <a href="/Products/ProductList" class="btn btn-primary video-button text-decoration-none">
+                    Khám Phá Ngay
+                </a>
+        </div>
+    </div>
+
+    <!-- Logo "Ufortable" -->
+    <div class="logo">
+        Future
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar hidden">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="navbar-brand">
+                        <a>
+                            <img src="~/Content/images/LogoShop.png" height="30px" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand text-dark active" aria-current="page" href="#">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/Products/ProductList">Mua Hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Liên Hệ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Thông tin User -->
+    <div class="dropdown user-icon">
+        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person"></i> <!-- Icon người dùng -->
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+            @if (Session["UserRole"] != null && (Session["UserRole"].ToString() == "Admin"))
+            {
+                <li><a class="dropdown-item" href="/Customers/Details">Thông tin cá nhân</a></li>
+                <li> <a class="dropdown-item" href="/Account/ChangePassword">Đổi Mật Khẩu</a></li>
+                <li><a class="dropdown-item" href="/Account/LogOut">Đăng xuất</a></li>
+            }
+            else if (Session["UserRole"] != null && (Session["UserRole"].ToString() == "Customer"))
+            {
+                <li><a class="dropdown-item" href="/Customers/Details">Thông tin cá nhân</a></li>
+                <li> <a class="dropdown-item" href="/Account/ChangePassword">Đổi Mật Khẩu</a></li>
+                <li><a class="dropdown-item" href="/Account/LogOut">Đăng xuất</a></li>
+            }
+            else
+            {
+                <li><a class="dropdown-item" href="/Account/Login">Đăng Nhập</a></li>
+            }
+        </ul>
+    </div>
+
+    <!-- giỏ hàng  -->
+    <div class="cart-icon">
+        <a href="/ShoppingCart/ShowCart">
+            <i class="bi bi-cart3 text-white"></i>
+        </a>
+
+    </div>
+    <!-- Thanh Tìm Kiếm -->
+    <div class="search-bar">
+        @using (Html.BeginForm("ProductList", "Products", FormMethod.Get))
+        {
+            <input type="text" id="searchName" name="SearchString" placeholder="Tìm kiếm sản phẩm..." />
+            <button type="submit">
+                <i class="search-icon fa fa-search"></i> <!-- Biểu tượng kính lúp -->
+            </button>
+        }
+    </div>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <h1 style="font-family:'Times New Roman'; font-weight:bold" class="text-center">Sản Phẩm Tiêu Biểu</h1>
+        <h3 class="mt-4">Nội Thất Phòng Ăn</h3>
+        <div class="row">
+            @foreach (var product in Model.DiningRoomProducts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card card-pro">
+                        <a href="~/Products/Details/@product.ProductID"><img src="~/Content/images/@product.ImagePro" alt="@product.NamePro" height="300px" class="card-img-top" />
+                        </a>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">@product.NamePro</h5>
+                            <p style="color:red">@product.Price.Value.ToString("#,##0").Replace(',', '.') ₫</p>
+                            <a class="btn btn-info" href="~/Products/Details/@product.ProductID">Chi tiết</a>
+                            <a href="~/Products/ProductList?idCate=NTPA" class="btn btn-success">Mua</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+        <h3 class="mt-4">Nội Thất Phòng Khách</h3>
+        <div class="row">
+            @foreach (var product in Model.LivingRoomProducts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card card-pro">
+                       <a href="/Products/Details/@product.ProductID">
+                           <img src="~/Content/images/@product.ImagePro" alt="@product.NamePro" height="300px" class="card-img-top" />
+                       </a>
+                        <div class="card-body">
+                            <h5 class="card-title">@product.NamePro</h5>
+                            <p style="color:red">@product.Price.Value.ToString("#,##0").Replace(',', '.') ₫</p>
+                            <a class="btn btn-info" href="/Products/Details/@product.ProductID">Chi tiết</a>
+                            <a href="/Products/ProductList?idCate=NTPK" class="btn btn-success">Mua</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <h3>Nội thất phòng ngủ</h3>
+        <div class="row">
+            @foreach (var product in Model.BedroomProducts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card card-pro">
+                       <a href="/Products/Details/@product.ProductID">
+                           <img src="~/Content/images/@product.ImagePro" alt="@product.NamePro" height="300px" class="card-img-top" />
+                       </a>
+                        <div class="card-body">
+                            <h5 class="card-title">@product.NamePro</h5>
+                            <p><span style="color:red">@product.Price.Value.ToString("#,##0") ₫</span></p>
+                            <a class="btn btn-info" href="/Products/Details/@product.ProductID">Chi tiết</a>
+                            <a href="/Products/ProductList?idCate=NTPN" class="btn btn-success">Mua</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+    <footer class="text-center text-lg-start bg-body-tertiary text-muted">
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <div class="me-5 d-none d-lg-block">
+            </div>
+        </section>
+
+        <!-- Section: Links  -->
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <!-- Content -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            <i class="fas fa-gem me-2"></i>Nội Thất Future
+                        </h6>
+                        <p>
+                            Nội Thất Future là thương hiệu đến từ Canada với gần 40 năm kinh nghiệm trong việc sản xuất
+                            và xuất khẩu nội thất đạt chuẩn quốc tế.
+                        </p>
+                        <img src="https://theme.hstatic.net/200000065946/1001264503/14/logo_bct.png?v=500" width="65%" /> <br />
+                        <img src="https://images.dmca.com/Badges/dmca_protected_18_120.png?ID=c870a589-fd82-4c14-9e41-c3891ec42fb5" />
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Products
+                        </h6>
+                        <p>
+                            <a href="/Products/ProductList?idCate=NTPN" class="text-reset">Nội Thất Phòng Ngủ</a>
+                        </p>
+                        <p>
+                            <a href="/Products/ProductList?idCate=NTPA" class="text-reset">Nội Thất Phòng Ăn</a>
+                        </p>
+                        <p>
+                            <a href="/Products/ProductList?idCate=NTPN" class="text-reset">Nội Thất Phòng Khách</a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Dịch Vụ
+                        </h6>
+                        <p>
+                        <p>Chính sách bán hàng</p>
+                        </p>
+                        <p>
+                        <p>Chính sách giao hàng và lắp đặt</p>
+                        </p>
+                        <p>
+                        <p>Chính sách bảo hành & bảo trì</p>
+                        </p>
+                        <p>
+                        <p>Chính sách đổi trả</p>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                        <p><i class="fas fa-home me-3"></i>828 Đ. Sư Vạn Hạnh, Phường 12, Quận 10, Hồ Chí Minh</p>
+                        <p>
+                            <i class="fas fa-envelope me-3"></i>
+                            Contactme@gmail.com
+                        </p>
+                        <p><i class="fas fa-phone me-3"></i> +84 345 346 240</p>
+                        <div style="margin-left:-5px">
+                            <a href="https://www.facebook.com/AnhDuydragon.GG?locale=vi_VN" target="_blank" class="me-2 text-decoration-none">
+                                <i class="fab fa-facebook fa-2x"></i>
+                            </a>
+                            <a href="https://github.com/FLD-TN" target="_blank" class="me-2 text-decoration-none">
+                                <i class="fab fa-github fa-2x"></i>
+                            </a>
+                            <a href="#" target="_blank" class="me-2 text-decoration-none">
+                                <i class="fab fa-google fa-2x"></i>
+                            </a>
+                            <a href="#" target="_blank" class="me-2 text-decoration-none">
+                                <i class="fab fa-twitter fa-2x"></i>
+                            </a>
+                            <a href="#" target="_blank" class="me-2 text-decoration-none">
+                                <i class="fab fa-tiktok fa-2x"></i>
+                            </a>
+                        </div>
+                        @*<p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>*@
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+        <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            Copyright © 2024 Shop Nội Thất - Đồ Án Lập Trình Web
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Jquery & Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var lastScrollTop = 0;
+            var navbar = $('.navbar');
+
+            $(window).scroll(function () {
+                var currentScroll = $(this).scrollTop();
+
+                // Nếu ở đầu trang, ẩn navbar
+                if (currentScroll <= 0) {
+                    navbar.addClass('hidden');
+                }
+                else if (currentScroll > lastScrollTop) {
+                    navbar.removeClass('hidden');
+                }
+
+                lastScrollTop = currentScroll;
+            });
+        });
+    </script>
+
+
+</body>
+</html>

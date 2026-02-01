@@ -20,7 +20,7 @@ jobs:
       run: nuget restore
 
     - name: Build with MSBuild
-      run: msbuild DBPMlt.sln /p:Configuration=Release
+      run: msbuild MVC_Test03.sln /p:Configuration=Release
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2

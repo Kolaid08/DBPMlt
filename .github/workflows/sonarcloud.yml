@@ -8,22 +8,19 @@ on:
 
 jobs:
   build:
-    name: Build and Analyze
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '6.0.x'
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
 
-    - name: Restore
-      run: dotnet restore
+    - name: Restore NuGet
+      run: nuget restore
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build with MSBuild
+      run: msbuild DBPMlt.sln /p:Configuration=Release
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2

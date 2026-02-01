@@ -31,7 +31,11 @@ jobs:
       run: nuget restore
 
     - name: Build with MSBuild
-      run: msbuild **/*.sln /p:Configuration=Release
+      shell: pwsh
+      run: |
+        $sln = Get-ChildItem -Recurse -Filter *.sln | Select-Object -First 1
+        Write-Host "Using solution: $($sln.FullName)"
+        msbuild "$($sln.FullName)" /p:Configuration=Release
 
     - name: Sonar End
       run: |
